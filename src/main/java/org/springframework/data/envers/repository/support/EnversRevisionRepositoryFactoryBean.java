@@ -99,33 +99,16 @@ public class EnversRevisionRepositoryFactoryBean extends
 	            RepositoryInformation information, EntityManager entityManager) {
 
 	        JpaEntityInformation<?, Serializable> entityInformation = getEntityInformation(information.getDomainType());
-	        
-	        //return getTargetRepository(entityInformation, entityManager);
 	        Class<?> repoBaseClass = information.getRepositoryBaseClass();
 	        SimpleJpaRepository<?, ?> result = null;
 	        if(RevisionRepository.class.isAssignableFrom(repoBaseClass)) {
 	            result = getTargetRepositoryViaReflection(information, entityInformation, revisionEntityInformation, entityManager);
 	        }
 	        else { 
-	          result = getTargetRepositoryViaReflection(information, entityInformation, entityManager);
+	          result = super.getTargetRepository(information, entityManager);
 	        }
-	        
 	        return result;
 	    }
-
-		/* 
-		 * (non-Javadoc)
-		 * @see org.springframework.data.jpa.repository.support.JpaRepositoryFactory#getTargetRepository(org.springframework.data.repository.core.RepositoryMetadata, javax.persistence.EntityManager)
-		 * /
-		@Override
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		protected <T, ID extends Serializable> SimpleJpaRepository<?, ?> getTargetRepository(RepositoryMetadata metadata,
-		    JpaEntityInformation<?, Serializable> entityInformation, EntityManager entityManager) {
-
-			JpaEntityInformation<T, Serializable> entityInformation = (JpaEntityInformation<T, Serializable>) getEntityInformation(metadata
-					.getDomainType());
-			return new EnversRevisionRepositoryImpl(entityInformation, revisionEntityInformation, entityManager);
-		}*/
 
 		/*
 		 * (non-Javadoc)
